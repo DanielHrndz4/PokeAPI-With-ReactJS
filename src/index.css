@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes fillMeter {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .meter-fill-animation {
+    animation: fillMeter 1s ease-in-out; /* Ajusta la duración y la función de temporización según tus preferencias */
+  }

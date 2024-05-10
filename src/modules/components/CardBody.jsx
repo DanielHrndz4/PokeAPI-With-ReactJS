@@ -5,21 +5,25 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 import { Link } from "react-router-dom";
+import { colors } from "../data/Colors";
 
-export default function CardBody({ name, img, id}) {
+export default function CardBody({ name, img, id, types }) {
   return (
-    <Link to={`/pokemon/${id}`}>
+    <Link to={`/pokemon/${name}`}>
       <Card sx={{ maxWidth: 345 }} className="m-auto">
         <CardActionArea>
           <CardMedia
             sx={{ width: 170 }}
-            className="m-auto"
+            className="m-auto w-[30px]"
             component="img"
             height="140"
             image={img}
             alt={name}
           />
-          <CardContent>
+          <CardContent className="p-[10px !important] text-center">
+            <h1 className="text-gray-500 py-2">
+              # {id.toString().padStart(5, "0")}
+            </h1>
             <Typography
               gutterBottom
               variant="h5"
@@ -28,17 +32,22 @@ export default function CardBody({ name, img, id}) {
             >
               {name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
+            <CardActions className="flex flex-row justify-center">
+              {types.map((typePerPokemon) => {
+                const type = typePerPokemon.type.name;
+                const color = colors[type] || "gray";
+                return (
+                  <div
+                    className="w-1/2 justify-center flex rounded-sm capitalize"
+                    style={{ backgroundColor: color, color: "white" }}
+                  >
+                    {type}
+                  </div>
+                );
+              })}
+            </CardActions>
           </CardContent>
         </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-        </CardActions>
       </Card>
     </Link>
   );

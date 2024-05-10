@@ -6,7 +6,7 @@ export default function Home() {
     const [pokemons, setPokemons] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 20; 
+    const itemsPerPage = 30; 
   
     useEffect(() => {
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${(currentPage - 1) * itemsPerPage}`)
@@ -33,18 +33,19 @@ export default function Home() {
   
     return (
       <main className="h-full w-full">
-        <h1 className="text-center">Pokémon</h1>
-        <div className="grid grid-cols-5 m-auto gap-8">
+        <h1 className="text-center py-12 text-4xl uppercase font-bold">Pokémon</h1>
+        <div className="grid grid-cols-5 m-auto gap-4">
           {pokemons.map((pokemon, index) => (
             <CardBody
               key={index}
               id={pokemon.id}
               name={pokemon.name}
-              img={pokemon.sprites.front_default}
+              types={pokemon.types}
+              img={pokemon.sprites.other.home.front_default != null ? pokemon.sprites.other.home.front_default : pokemon.sprites.front_default}
             ></CardBody>
           ))}
         </div>
-        <Pagination
+        <Pagination className="py-12 w-full m-auto basis-1"
           count={Math.ceil(totalResults / itemsPerPage)}
           page={currentPage}
           color="secondary" 
