@@ -8,10 +8,13 @@ import { Link } from "react-router-dom";
 import { colors } from "../data/Colors";
 
 export default function CardBody({ name, img, id, types }) {
+  const typeCard = types[0].type.name
+  const color = colors[typeCard]
   return (
     <Link to={`/pokemon/${name}`}>
       <Card sx={{ maxWidth: 345 }} className="m-auto">
         <CardActionArea>
+          <div className="w-full py-6" style={{backgroundColor:color}}>
           <CardMedia
             sx={{ width: 170 }}
             className="m-auto w-[30px]"
@@ -20,6 +23,7 @@ export default function CardBody({ name, img, id, types }) {
             image={img}
             alt={name}
           />
+          </div>
           <CardContent className="p-[10px !important] text-center">
             <h1 className="text-gray-500 py-2">
               # {id.toString().padStart(5, "0")}
