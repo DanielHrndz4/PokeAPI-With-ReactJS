@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { Pagination } from "@mui/material";
-import CardBody from "./components/CardBody";
 import { Fade } from "react-awesome-reveal";
+import { useParams, Link } from "react-router-dom"; // Importa Link
+import { Pagination, PaginationItem } from "@mui/material"; // Importa PaginationItem
+import CardBody from "./components/CardBody";
 
 export default function Home() {
   const [pokemons, setPokemons] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-
+  const params = useParams();
+  const page = params.page <= 44 ? params.page : 44
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function Home() {
 
     fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${
-        (currentPage - 1) * itemsPerPage
+        (page - 1) * itemsPerPage
       }`
     )
       .then((response) => response.json())
@@ -34,7 +36,7 @@ export default function Home() {
         setTotalResults(json.count);
       });
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
+  }, [params.page, currentPage]);
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -47,7 +49,7 @@ export default function Home() {
           <h1 className="text-center py-12 text-4xl uppercase font-bold text-[#B22222]">
             Pokémon
           </h1>
-          <div className="flex items-center justify-center w-full h-creen py-32">
+          <div className="flex items-center justify-center w-full h-screen">
             {/* <h1 className="text-center text-4xl font-bold">Loading...</h1> */}
           </div>
         </Fade>
@@ -76,13 +78,21 @@ export default function Home() {
                 ))}
               </div>
             </Fade>
-            <Pagination
-              className="py-12 w-full m-auto basis-1"
-              count={Math.ceil(totalResults / itemsPerPage)}
-              page={currentPage}
-              color="secondary"
-              onChange={handlePageChange}
-            />
+            <div className="flex justify-center py-16">
+              <Pagination
+                count={Math.ceil(totalResults / itemsPerPage)}
+                page={parseInt(page)}
+                color="secondary"
+                onChange={handlePageChange}
+                renderItem={(item) => (
+                  <PaginationItem
+                    component={Link}
+                    to={`/page/${item.page}`}
+                    {...item}
+                  />
+                )}
+              />
+            </div>
           </div>
         </Fade>
       )}
